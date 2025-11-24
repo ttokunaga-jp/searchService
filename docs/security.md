@@ -1,35 +1,6 @@
-# Testing & Security Playbook
+# Security Assurance & Vulnerability Management
 
-This document summarizes how `searchService` enforces quality, performance, and security for every change.
-
-## Continuous Test Automation
-
-- **Unit tests** – `make test-unit` (race detector + coverage). Executed via `make ci` in `.github/workflows/ci.yaml`.
-- **End-to-end tests** – `make test-e2e` spins up an in-memory gRPC server that exercises the `SearchDocuments` flow through the public API.
-- **Integration tests** – `make test-integration` bootstraps Elasticsearch, Qdrant, and Kafka with `testcontainers-go`.
-- **Aggregated CI** – `make ci` runs formatting, protobuf lint, `golangci-lint`, `go vet`, unit tests, and E2E tests on every push / PR. `make test-integration` runs as a follow-up stage inside the same workflow.
-
-Developers can reproduce the exact CI sequence locally with:
-
-```bash
-make ci
-TESTCONTAINERS_RYUK_DISABLED=true make test-integration
-```
-
-## Load Testing
-
-- Script: `tests/perf/k6/search.js` (k6 gRPC test).
-- Harness: `go run ./tests/perf/harness` provides a lightweight gRPC server backed by the in-memory repository so we can benchmark without external systems.
-- CI pipeline: `.github/workflows/load-test.yaml` runs weekly (Sunday 18:00 UTC) and on-demand with `workflow_dispatch`. The job loads the harness, installs k6, and runs a 1 minute soak (`25 vus`, `p95 < 500 ms` threshold).
-- Local workflow:
-
-```bash
-go run ./tests/perf/harness &
-make test-load        # defaults: 10 VUs, 30s, target 127.0.0.1:50071
-kill %1               # stop harness
-```
-
-Override load parameters via `K6_VUS`, `K6_DURATION`, and `GRPC_TARGET`.
+This playbook defines how `searchService` prevents, detects, and responds to security issues. For functional and performance testing, see `docs/ci-cd.md`. Everything below focuses on code scanning, dependency hygiene, and operational follow-up.
 
 ## Security Scans
 

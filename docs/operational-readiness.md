@@ -1,6 +1,6 @@
 # Operational Readiness: Staging to Production
 
-This guide covers the minimum operational preparations required before promoting `searchService` from staging to production. It documents how logging, metrics, alerting, monitoring, rollback, and incident response must be implemented and validated.
+This guide covers the minimum operational preparations required before promoting `searchService` from staging to production. It documents how logging, metrics, alerting, monitoring, rollback, and incident response must be implemented and validated. Use it together with `docs/security.md` (for security controls) and `docs/ci-cd.md` (for pre-deploy verification) to get a complete release picture.
 
 ## Logging
 

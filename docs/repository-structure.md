@@ -1,5 +1,7 @@
 # Repository Strategy and Layout
 
+Use this document when you need to understand **where** code lives or **how** to add a new component. It sets guardrails for contributors so tooling, CI, and operations can rely on a consistent layout. For quality workflows refer to `docs/ci-cd.md`; for runtime operations see `docs/operational-readiness.md`.
+
 This service follows a polyrepo model: each deployable service is kept in its own repository. Shared utilities must be published as standalone Go modules and consumed via versioned tags; never import code directly from another service with `replace` directives.
 
 ## Directory Template
